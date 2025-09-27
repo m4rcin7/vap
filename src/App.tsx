@@ -5,6 +5,7 @@ function App() {
   return (
     <>
       <Menu />
+      <main></main>
       <Footer />
     </>
   );
