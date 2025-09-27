@@ -1,35 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-interface MenuProps {
-  logo?: string;
-  menuItems?: MenuItem[];
-  className?: string;
-}
-
-interface MenuItem {
+export interface MenuItem {
   label: string;
   href: string;
   isActive?: boolean;
 }
 
+export interface MenuProps {
+  logo?: string;
+  menuItems?: MenuItem[];
+  className?: string;
+}
+
 const defaultMenuItems: MenuItem[] = [
-  { label: 'Home', href: '/', isActive: true },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Contact', href: '/contact' },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Contact", href: "/contact" },
 ];
 
-const Menu: React.FC<MenuProps> = ({ 
-  logo = 'Logo',
+const Menu: React.FC<MenuProps> = ({
+  logo = "Logo",
   menuItems = defaultMenuItems,
-  className = ''
+  className = "",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const location = useLocation();
 
   return (
     <nav className={`bg-white shadow-lg ${className}`}>
@@ -37,26 +35,29 @@ const Menu: React.FC<MenuProps> = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold text-gray-800 hover:text-gray-600">
+            <Link
+              to="/"
+              className="text-xl font-bold text-gray-800 hover:text-gray-600"
+            >
               {logo}
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {menuItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
+              {menuItems.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                    item.isActive
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    location.pathname === item.href
+                      ? "bg-blue-500 text-white"
+                      : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -64,14 +65,14 @@ const Menu: React.FC<MenuProps> = ({
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
-              onClick={toggleMenu}
+              onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-              aria-expanded="false"
+              aria-expanded={isOpen}
             >
               <span className="sr-only">Open menu</span>
               {/* Hamburger icon */}
               <svg
-                className={`${isOpen ? 'hidden' : 'block'} h-6 w-6`}
+                className={`${isOpen ? "hidden" : "block"} h-6 w-6`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -86,7 +87,7 @@ const Menu: React.FC<MenuProps> = ({
               </svg>
               {/* Close icon */}
               <svg
-                className={`${isOpen ? 'block' : 'hidden'} h-6 w-6`}
+                className={`${isOpen ? "block" : "hidden"} h-6 w-6`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -105,24 +106,24 @@ const Menu: React.FC<MenuProps> = ({
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
-          {menuItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.href}
+      {isOpen && (
+        <div className="md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              to={item.href}
               className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                item.isActive
-                  ? 'bg-blue-500 text-white'
-                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                location.pathname === item.href
+                  ? "bg-blue-500 text-white"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               }`}
               onClick={() => setIsOpen(false)}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
-      </div>
+      )}
     </nav>
   );
 };
