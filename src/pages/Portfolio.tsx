@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Portfolio () {
+export function Portfolio() {
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
   const projects = [
