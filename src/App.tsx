@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Menu from "./components/Menu";
 import { Home } from "./pages/Home";
+import { PostDetail } from './pages/PostDetail';
 import { About } from "./pages/About";
 import { Services } from "./pages/Services";
 import { Portfolio } from "./pages/Portfolio";
@@ -14,6 +15,7 @@ function App() {
       <div className="p-4">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/post/:postId" element={<PostDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/portfolio" element={<Portfolio />} />
