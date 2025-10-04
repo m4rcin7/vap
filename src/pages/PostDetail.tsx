@@ -1,17 +1,15 @@
+import { useParams, useNavigate } from "react-router-dom";
 import { postsData } from "../data/posts";
 
-interface PostDetailProps {
-  postId: number;
-  onBack?: () => void;
-}
+export function PostDetail() {
+  const { postId } = useParams<{ postId: string }>();
+  const navigate = useNavigate();
 
-export function PostDetail({ postId, onBack }: PostDetailProps) {
-  // Find the post by ID
-  const post = postsData.find((p) => p.id === postId);
+  const post = postsData.find((p) => p.id === Number(postId));
 
-  // If using React Router, you would get postId from useParams():
-  // const { postId } = useParams();
-  // const navigate = useNavigate();
+  const handleBack = () => {
+    navigate("/");
+  };
 
   if (!post) {
     return (
@@ -24,7 +22,7 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
             The post you're looking for doesn't exist.
           </p>
           <button
-            onClick={onBack}
+            onClick={handleBack}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
           >
             Back to Home
@@ -34,18 +32,20 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
     );
   }
 
-  // Get related posts (same category, exclude current post)
   const relatedPosts = postsData
     .filter((p) => p.category === post.category && p.id !== post.id)
     .slice(0, 3);
 
+  const handleRelatedPostClick = (relatedPostId: number) => {
+    navigate(`/post/${relatedPostId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
-            onClick={onBack}
+            onClick={handleBack}
             className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
           >
             <span className="mr-2">←</span>
@@ -55,7 +55,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-12">
-        {/* Post Header */}
         <article>
           <div className="mb-8">
             <span className="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
@@ -83,7 +82,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
             </div>
           </div>
 
-          {/* Featured Image */}
           <div
             className={`h-96 ${post.image} rounded-lg mb-8 flex items-center justify-center`}
           >
@@ -92,7 +90,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
             </span>
           </div>
 
-          {/* Post Content */}
           <div className="prose prose-lg max-w-none mb-12">
             <div className="text-xl text-gray-600 mb-8 font-medium leading-relaxed">
               {post.excerpt}
@@ -102,7 +99,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
             </div>
           </div>
 
-          {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-gray-200">
             <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">
               #{post.category.toLowerCase()}
@@ -115,7 +111,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
             </span>
           </div>
 
-          {/* Share Section */}
           <div className="bg-gray-100 rounded-lg p-8 mb-12">
             <h3 className="text-xl font-bold text-gray-900 mb-4">
               Share this article
@@ -134,7 +129,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
           </div>
         </article>
 
-        {/* Related Posts */}
         {relatedPosts.length > 0 && (
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
@@ -144,7 +138,7 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
               {relatedPosts.map((relatedPost) => (
                 <div
                   key={relatedPost.id}
-                  onClick={() => window.location.reload()} // In real app, navigate to new post
+                  onClick={() => handleRelatedPostClick(relatedPost.id)}
                   className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow"
                 >
                   <div className={`h-32 ${relatedPost.image}`}></div>
@@ -165,7 +159,6 @@ export function PostDetail({ postId, onBack }: PostDetailProps) {
           </section>
         )}
 
-        {/* Author Bio */}
         <section className="bg-white rounded-lg shadow-lg p-8">
           <div className="flex items-start gap-6">
             <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">

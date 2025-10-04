@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { postsData } from "../data/posts";
+import { useNavigate } from "react-router-dom";
 
-interface HomeProps {
-  onPostClick?: (postId: number) => void;
-}
-
-export function Home({ onPostClick }: HomeProps) {
+export function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const navigate = useNavigate();
 
   const categories = [
     "all",
@@ -19,16 +17,11 @@ export function Home({ onPostClick }: HomeProps) {
       : postsData.filter((post) => post.category === selectedCategory);
 
   const handlePostClick = (postId: number) => {
-    if (onPostClick) {
-      onPostClick(postId);
-    }
-    // If using React Router, you would do:
-    // navigate(`/post/${postId}`);
+    navigate(`/post/${postId}`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="max-w-3xl">
@@ -44,7 +37,6 @@ export function Home({ onPostClick }: HomeProps) {
         </div>
       </section>
 
-      {/* Featured Stats */}
       <section className="max-w-6xl mx-auto px-4 -mt-10">
         <div className="bg-white rounded-lg shadow-lg p-8 grid grid-cols-2 md:grid-cols-4 gap-6">
           <div className="text-center">
@@ -68,7 +60,6 @@ export function Home({ onPostClick }: HomeProps) {
         </div>
       </section>
 
-      {/* Category Filter */}
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="flex flex-wrap gap-3 justify-center mb-12">
           {categories.map((category) => (
@@ -86,7 +77,6 @@ export function Home({ onPostClick }: HomeProps) {
           ))}
         </div>
 
-        {/* Posts Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredPosts.map((post) => (
             <article
@@ -124,7 +114,6 @@ export function Home({ onPostClick }: HomeProps) {
         </div>
       </section>
 
-      {/* Newsletter Section */}
       <section className="max-w-6xl mx-auto px-4 pb-12">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-12 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">
