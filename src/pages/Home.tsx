@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [email, setEmail] = useState<string>("");
+  const [subscribed, setSubscribed] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const categories = [
@@ -20,6 +22,16 @@ export function Home() {
     navigate(`/post/${postId}`);
   };
 
+  const handleSubscribe = () => {
+    if (email) {
+      setSubscribed(true);
+      setTimeout(() => {
+        setSubscribed(false);
+        setEmail("");
+      }, 3000);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
@@ -30,7 +42,7 @@ export function Home() {
               Discover the latest insights, tutorials, and stories about web
               development, design, and technology.
             </p>
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors cursor-pointer">
               Start Reading
             </button>
           </div>
@@ -69,7 +81,7 @@ export function Home() {
               className={`px-6 py-2 rounded-full font-medium transition-all capitalize ${
                 selectedCategory === category
                   ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
+                  : "bg-white text-gray-700 hover:bg-gray-100 cursor-pointer"
               }`}
             >
               {category}
@@ -116,22 +128,41 @@ export function Home() {
 
       <section className="max-w-6xl mx-auto px-4 pb-12">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-12 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">
-            Subscribe to Our Newsletter
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Get the latest articles delivered directly to your inbox
-          </p>
-          <div className="max-w-md mx-auto flex gap-3">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
-            />
-            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Subscribe
-            </button>
-          </div>
+          {!subscribed ? (
+            <>
+              <h2 className="text-3xl font-bold mb-4">
+                Subscribe to Our Newsletter
+              </h2>
+              <p className="text-xl mb-8 opacity-90">
+                Get the latest articles delivered directly to your inbox
+              </p>
+              <div className="max-w-md mx-auto flex gap-3">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+                />
+                <button
+                  onClick={handleSubscribe}
+                  className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="py-8">
+              <div className="text-6xl mb-4">✓</div>
+              <h2 className="text-3xl font-bold mb-4">
+                Thank You for Subscribing!
+              </h2>
+              <p className="text-xl opacity-90">
+                Check your email to confirm your subscription
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </div>
