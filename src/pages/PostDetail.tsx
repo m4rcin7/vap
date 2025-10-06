@@ -46,7 +46,7 @@ export function PostDetail() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
             onClick={handleBack}
-            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
           >
             <span className="mr-2">←</span>
             Back to Posts
