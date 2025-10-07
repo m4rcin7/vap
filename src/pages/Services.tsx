@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Services() {
   const [activeService, setActiveService] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const services = [
     {
@@ -92,6 +94,14 @@ export function Services() {
       price: "Starting at $499/month",
     },
   ];
+
+  const handleButtonClick = (action: string) => {
+    if (action === "schedule") {
+      navigate("/contact");
+    } else if (action === "viewWork") {
+      navigate("/portfolio");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -292,10 +302,16 @@ export function Services() {
             needs. Get a free consultation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+            <button
+              onClick={() => handleButtonClick("schedule")}
+              className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            >
               Schedule a Call
             </button>
-            <button className="px-8 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors">
+            <button
+              onClick={() => handleButtonClick("viewWork")}
+              className="px-8 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+            >
               View Our Work
             </button>
           </div>
